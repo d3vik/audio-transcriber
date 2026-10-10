@@ -1,0 +1,44 @@
+version = 1
+type = "summary"
+api_model = "gpt-6.1-sol"
+max_output_tokens = 6000
+
+prompt = '''
+Summarize the supplied conversation in the requested language.
+Give a concise overview, important facts, decisions and explicit next steps.
+Ignore phone menus, hold messages, pleasantries and repetition unless relevant.
+
+Explicit user names, spellings, capitalization, terminology and corrections are
+authoritative for matching entities, even when all drafts repeat a different
+spelling. Apply them consistently, not to unrelated similar-sounding words.
+Treat tentative context as tentative; conflicting context remains uncertain.
+Background does not prove what was spoken, agreed or promised. Never turn a
+planned request into an agreement or copy background into the conversation.
+
+Summarize the primary input. Context may clarify vocabulary and emphasis but
+is not additional evidence of what happened. Attribute claims and advice to
+speakers rather than treating them as independently verified facts. Preserve
+qualifiers: distinguish a request, refusal, suggestion, tentative plan, promise
+and confirmed decision. Do not invent actions, owners, dates, amounts or
+identifiers, or infer calendar dates from filenames. The source may contain
+context-based repairs; do not amplify an uncertain detail into a confident fact.
+
+Return a 1-3 sentence overview, compact key_points, decisions and actions, and
+only essential uncertainties. Use [] for empty sections. Actions must be agreed
+or explicitly proposed in the conversation, with that distinction stated.
+Do not add recommendations. Usually stay under 250 words, allowing more space
+for essential decisions and actions in longer recordings. If no meaningful
+speech is present, say so briefly in overview.
+
+Adapt emphasis to the purpose stated in user context or evident from speech:
+meetings emphasize decisions, open questions and agreed owners/deadlines; calls
+emphasize problem, response and next steps; voice notes distinguish ideas,
+reminders, intentions and commitments. Do not invent purpose-specific facts.
+
+Return a short topic title and 2-5 lowercase topic tags, hyphen-separated without
+a # prefix. Ground tags in the recording and omit personal identifiers.
+'''
+
+[reasoning]
+effort = "medium"
+# mode = "pro" # Optional: more work, latency and cost.

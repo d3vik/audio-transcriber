@@ -1,0 +1,51 @@
+version = 1
+id = "researched"
+outputs = ["reconcile","summary","research"]
+
+[parts]
+source = "reconcile"
+model = "../models/combine-parts.toml"
+max_seconds = 300
+
+[[stages]]
+id = "transcribe"
+model = "../models/transcribe-primary.toml"
+context = ["user","previous"]
+
+[[stages]]
+id = "transcribe_independent"
+model = "../models/transcribe-independent.toml"
+context = ["user","previous"]
+
+[[stages]]
+id = "diarize"
+model = "../models/diarize-speakers.toml"
+
+[[stages]]
+id = "reconcile_draft"
+model = "../models/reconcile-draft.toml"
+inputs = ["transcribe","transcribe_independent","diarize"]
+context = ["user","previous"]
+
+[[stages]]
+id = "research"
+model = "../models/research-terms.toml"
+inputs = ["transcribe","transcribe_independent"]
+context = ["user","previous","reconcile_draft"]
+
+[[stages]]
+id = "transcribe_verify"
+model = "../models/transcribe-verify.toml"
+context = ["user","previous","reconcile_draft","research"]
+
+[[stages]]
+id = "reconcile"
+model = "../models/reconcile-final.toml"
+inputs = ["transcribe","transcribe_independent","transcribe_verify","diarize"]
+context = ["user","previous","reconcile_draft","research"]
+
+[[stages]]
+id = "summary"
+model = "../models/summarize-recording.toml"
+inputs = ["reconcile"]
+context = ["user"]

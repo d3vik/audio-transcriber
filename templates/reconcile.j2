@@ -1,0 +1,6 @@
+{% include 'frontmatter.j2' %}
+{% for turn in turns %}{{ turn.label }} {{ turn.text }}
+
+{% endfor %}{% if notes %}{{ notes_heading }}:
+{% for note in notes %}- {{ note }}
+{% endfor %}{% endif %}

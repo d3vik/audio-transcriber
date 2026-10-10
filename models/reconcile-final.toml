@@ -1,0 +1,90 @@
+version = 1
+type = "reconcile"
+api_model = "gpt-6.1-sol"
+max_output_tokens = 24000
+
+prompt = '''
+Produce the final conversation from the original word transcripts and diarization.
+When a provisional reconciliation and audio verification pass are supplied,
+compare them with the original evidence. The verification pass listened again but
+was influenced by the draft: neither it nor the draft automatically wins.
+Recover meaningful content omitted by the draft and reject unsupported repairs.
+Do not use majority voting between dependent outputs. If no draft or verification
+pass is supplied, reconcile the available transcript and diarization directly.
+
+Create one readable, complete conversation from the supplied transcripts.
+After explicit user corrections, ordinary transcriptions are the preferred
+source for WORDS; diarization is the preferred source for SPEAKERS and TIMING.
+These are working preferences, not guarantees. Use diarized wording to recover
+meaningful material missing from ordinary transcripts or when it clearly fits
+better. Compare every ordinary draft: no pass wins just because it ran later.
+Use provenance to recognize dependent passes; they are not independent votes.
+
+Explicit user names, spellings, capitalization, terminology and corrections are
+authoritative for matching entities, even when all drafts repeat a different
+spelling. Apply them consistently, not to unrelated similar-sounding words.
+Treat tentative context as tentative; conflicting context remains uncertain.
+Background does not prove what was spoken, agreed or promised. Never turn a
+planned request into an agreement or copy background into the conversation.
+
+Use conversational context to repair recognition errors, join fragments and
+reconstruct a plausible phrase. You may infer short connective words, fix
+obvious grammar and remove meaningless stutters. Choose the best supported
+reading instead of listing alternatives. Preserve the spoken language,
+conversational tone, meaningful interruptions, substantive details and intent.
+Return the full dialogue, not a summary. Never invent events, claims, promises,
+numbers or identifiers. Preserve deliberate language switches. When no reading
+is supportable, use the supplied language-specific unclear-speech marker.
+
+Start from diarized speaker IDs; repair obvious speaker mixups when the dialogue
+supports it. Assign ordinary-only material to an existing speaker when clear;
+otherwise use null. Keep original IDs internally. Combine fragments into
+natural turns, preserving meaningful acknowledgments and interruptions.
+
+Attempt to establish speaker_names for every current-part speaker when the
+evidence clearly supports a name. A self-introduction is sufficient but not
+required. A direct address and response, or explicit user context linking a
+named participant to a role corroborated by this part's dialogue, can establish
+the association. First examine what each local speaker says, their role in the
+exchange, and the supplied context; then assign the best-supported name. A list
+of possible names or a generic role alone is not enough. Use canonical user
+spelling and treat tentative or conflicting context as uncertain.
+
+Identify each part independently. A/B labels restart and can swap across parts.
+Previous-part names are hypotheses to check against current dialogue, not an
+identity mapping to inherit. Prior draft names are fallible too. Keep all
+original local IDs; speaker_names labels them and does not merge them.
+When the association is unclear, omit it and briefly note a material uncertainty.
+Names apply to all turns for that local ID, not only the naming exchange.
+A mentioned third party, quoted introduction or organization is not a voice.
+Research cannot establish a private participant's identity.
+
+Speaker attribution may clarify vocabulary and alignment supported by the
+current audio/transcripts. It cannot supply unspoken words, statements, missing
+reports or agreements from background, or repeat previous-part speech.
+
+source_segments contains zero-based indices in the sole diarization input.
+Use every index exactly once, including empty segments: attach those to a
+nearby turn. Never replace spoken segments with empty turn text. Grouped
+indices must be unique and increasing; groups may interleave between speakers.
+Order timed turns by their earliest source start time. Place unmatched spoken
+material naturally using source_segments=[]; its speaker may be inferred.
+Never invent timestamps; Python derives them from the source segments.
+
+Keep notes empty by default. Note only unresolved ambiguity materially affecting
+meaning or an important identifier, with at most three concise notes across
+turns and the overall notes field. Omit routine explanations of edits, alignment,
+speaker inference, methodology and competing readings.
+
+Research is fallible background for unresolved public names and terminology.
+Prefer primary-source evidence without overriding explicit user spellings.
+Preserve what the speaker claimed even when the web disagrees. Do not add
+research commentary, links, or external facts to the dialogue.
+
+Return a short topic title and 2-5 concise lowercase topic tags in the recording
+language, hyphen-separated with no # prefix. Ground them in the conversation;
+omit personal names, phone numbers and other identifiers.
+'''
+
+[reasoning]
+effort = "high"

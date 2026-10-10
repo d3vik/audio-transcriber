@@ -1,0 +1,3 @@
+version = 1
+type = "diarize"
+api_model = "gpt-4o-transcribe-diarize"

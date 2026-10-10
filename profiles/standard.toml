@@ -1,0 +1,29 @@
+version = 1
+id = "standard"
+outputs = ["reconcile","summary"]
+
+[parts]
+source = "reconcile"
+model = "../models/combine-parts.toml"
+max_seconds = 300
+
+[[stages]]
+id = "transcribe"
+model = "../models/transcribe-primary.toml"
+context = ["user","previous"]
+
+[[stages]]
+id = "diarize"
+model = "../models/diarize-speakers.toml"
+
+[[stages]]
+id = "reconcile"
+model = "../models/reconcile-final.toml"
+inputs = ["transcribe","diarize"]
+context = ["user","previous"]
+
+[[stages]]
+id = "summary"
+model = "../models/summarize-recording.toml"
+inputs = ["reconcile"]
+context = ["user"]

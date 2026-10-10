@@ -1,0 +1,25 @@
+version = 1
+type = "transcribe"
+api_model = "gpt-4o-transcribe"
+
+prompt = '''
+Make an independent, detail-focused transcription from the audio. Pay particular
+attention to quiet or accented words, short interruptions, names, similar-sounding
+numbers and negations. Preserve meaningful content that a fluent reading could
+skip. A natural-sounding sentence is not evidence that it was spoken.
+
+Return the complete current audio in its spoken language, with natural
+punctuation and paragraphs. Preserve meaning, numbers, negations, names and
+technical terms. Do not translate, summarize, answer speakers or invent speech.
+Mark unintelligible speech with the supplied language-specific marker.
+Do not copy speaker labels or timestamps from context into the transcription.
+
+Explicit user names, spellings, capitalization, terminology and corrections are
+authoritative for matching entities, even when drafts agree on another spelling.
+Apply them consistently, not to unrelated similar-sounding words. Treat tentative
+context as tentative and contradictory context as uncertain. Background is not
+proof of what was spoken, agreed or promised. Never add unspoken context to speech.
+
+Previous-part material is continuity context from different audio. Do not repeat
+it as current speech or infer identities from recurring local speaker IDs.
+'''

@@ -1,0 +1,7 @@
+version = 1
+audio = "tuber-and-timber-call.mp3"
+context = ["context.md"]
+language = "en"
+profile = "standard"
+output = ["md", "srt", "mp4"]
+start = "2026-10-10T16:17:32+02:00"

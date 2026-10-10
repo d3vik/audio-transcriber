@@ -1,0 +1,16 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+openai = "*"
+jinja2 = "*"
+
+[dev-packages]
+pycodestyle = "*"
+
+[scripts]
+test = "python -m unittest discover -s test -v"
+pycodestyle = "python -m pycodestyle transcribe.py src test"
+transcribe = "python transcribe.py"

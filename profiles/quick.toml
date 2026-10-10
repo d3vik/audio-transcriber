@@ -1,0 +1,19 @@
+version = 1
+id = "quick"
+outputs = ["transcribe","summary"]
+
+[parts]
+source = "transcribe"
+model = "../models/combine-parts.toml"
+max_seconds = 300
+
+[[stages]]
+id = "transcribe"
+model = "../models/transcribe-primary.toml"
+context = ["user","previous"]
+
+[[stages]]
+id = "summary"
+model = "../models/summarize-recording.toml"
+inputs = ["transcribe"]
+context = ["user"]

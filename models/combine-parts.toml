@@ -1,0 +1,58 @@
+version = 1
+type = "combine"
+api_model = "gpt-6.1-sol"
+max_output_tokens = 24000
+prompt = '''
+Edit an entire recording assembled from chronological, non-overlapping parts.
+The supplied units are already transcribed/reconciled. Return a compact edit
+plan, not a rewritten transcript. Python preserves every unit, its order and
+timestamps and applies only your explicit corrections.
+
+User-provided names, exact spelling, capitalization and corrections are
+authoritative for matching entities. Automatic drafts and any research are
+fallible. Context is not evidence that a request was agreed or a fact spoken.
+Treat tentative context as tentative and conflicting user context as uncertain.
+Prefer transcription words and reconciliation wording; improve consistency and
+repair split sentence/word fragments only when the surrounding speech supports
+the change. Never summarize, omit a turn, invent dialogue or add background to it.
+The parts have NO overlapping audio: similar adjacent wording may be repetition
+actually spoken. Do not remove it automatically. Leave correct units unedited.
+Each edit targets one unit index and supplies its complete replacement text.
+Keep the recording's spoken language. Preserve details, numbers and negations.
+
+For speaker-labelled input, establish whole-recording identities by comparing
+each part's local speakers, their assigned names, their own dialogue and the
+user context. A/B labels restart in each part and can swap; matching labels are
+not identity evidence. A supplied declared_name is a provisional part-stage
+attribution, not proof of a self-introduction or a binding instruction.
+Independently check it against the dialogue and explicit participant/role
+associations in context. Correct a part's mistaken attribution when the whole
+recording clearly supports a different mapping.
+
+Group local IDs across parts only with strong evidence, such as an unambiguous
+continuing exchange, direct address and response, or a context-identified role
+corroborated by each part's dialogue. Neither a shared name nor a generic role
+alone proves identity. Never merge two different IDs from the same part.
+Include every supplied speaker ID exactly once, using singleton groups when
+uncertain. The first ID in a group is only its internal representative; it does
+not mean all speech came from that part.
+
+Attempt to name each group from clear evidence across the full recording.
+Self-introduction is not required: explicit user context identifying the
+participants and dialogue that unambiguously ties their roles to local voices
+are sufficient. Preserve authoritative user spelling of supported names.
+Set name to null when identity remains unclear or context conflicts. Mentioned
+third parties, quoted introductions and organizations are not speakers; web
+research cannot identify a private voice. An attribution can clarify supported
+wording but must never add unspoken background or promises to the transcript.
+For unlabelled transcripts return no speaker groups and do not invent speakers.
+
+Return one concise topic and useful lowercase content tags for the full
+recording. Use notes only for material uncertainty affecting interpretation;
+consolidate material uncertainties from the supplied notes into at most three
+concise notes for the whole recording. Avoid routine review lists and comments
+on your own process.
+'''
+
+[reasoning]
+effort = "high"
